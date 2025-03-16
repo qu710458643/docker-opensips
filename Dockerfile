@@ -14,7 +14,7 @@ ARG OPENSIPS_BUILD=releases
 # using ustc mirror 
 RUN sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list.d/ubuntu.sources
 #install basic components
-RUN apt-get -y update -qq && apt-get -y install gnupg2 ca-certificates curl autoconf
+RUN apt-get -y update -qq && apt-get -y install gnupg2 ca-certificates curl autoconf software-properties-common
 
 #add keyserver, repository
 # RUN apt-key adv --fetch-keys https://apt.opensips.org/pubkey.gpg
@@ -22,8 +22,11 @@ RUN curl https://apt.opensips.org/opensips-org.gpg -o /usr/share/keyrings/opensi
 # RUN echo "deb https://apt.opensips.org bullseye ${OPENSIPS_VERSION}-${OPENSIPS_BUILD}" >/etc/apt/sources.list.d/opensips.list
 RUN echo "deb [signed-by=/usr/share/keyrings/opensips-org.gpg] https://apt.opensips.org noble ${OPENSIPS_VERSION}-${OPENSIPS_BUILD}" \
         >/etc/apt/sources.list.d/opensips.list
+RUN add-apt-repository ppa:ondrej/php -y
 RUN apt-get -y update -qq
 RUN apt-get -y install opensips${OPENSIPS_VERSION_MINOR:+=$OPENSIPS_VERSION.$OPENSIPS_VERSION_MINOR-$OPENSIPS_VERSION_REVISION}
+# add php 7.4
+RUN apt-get -y install php7.4 apache2 libapache2-mod-php7.4 php7.4-curl php7.4-mysql php7.4-gd php7.4-pear php7.4-cli php7.4-apcu
 
 ARG OPENSIPS_CLI=false
 RUN if [ ${OPENSIPS_CLI} = true ]; then \
@@ -38,10 +41,10 @@ RUN if [ -n "${OPENSIPS_EXTRA_MODULES}" ]; then \
     apt-get -y install ${OPENSIPS_EXTRA_MODULES} \
     ;fi
 
-RUN rm -rf /var/lib/apt/lists/*
+# RUN rm -rf /var/lib/apt/lists/*
 RUN sed -i "s/stderror_enabled=no/stderror_enabled=yes/g" /etc/opensips/opensips.cfg && \
     sed -i "s/syslog_enabled=yes/syslog_enabled=no/g" /etc/opensips/opensips.cfg
 
 EXPOSE 5060/udp
-
+EXPOSE 80/tcp
 ENTRYPOINT ["/usr/sbin/opensips", "-F"]
