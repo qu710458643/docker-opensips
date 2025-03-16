@@ -20,16 +20,16 @@ RUN apt-get -y update -qq && apt-get -y install gnupg2 ca-certificates curl auto
 # RUN apt-key adv --fetch-keys https://apt.opensips.org/pubkey.gpg
 RUN curl https://apt.opensips.org/opensips-org.gpg -o /usr/share/keyrings/opensips-org.gpg
 # RUN echo "deb https://apt.opensips.org bullseye ${OPENSIPS_VERSION}-${OPENSIPS_BUILD}" >/etc/apt/sources.list.d/opensips.list
-RUN echo "deb [signed-by=/usr/share/keyrings/opensips-org.gpg] https://apt.opensips.org ${OPENSIPS_VERSION}-${OPENSIPS_BUILD}" >/etc/apt/sources.list.d/opensips.list
-RUN apt-get -y update -qq && \
-    apt-get -y install \
-        opensips${OPENSIPS_VERSION_MINOR:+=$OPENSIPS_VERSION.$OPENSIPS_VERSION_MINOR-$OPENSIPS_VERSION_REVISION}
+RUN echo "deb [signed-by=/usr/share/keyrings/opensips-org.gpg] https://apt.opensips.org ${OPENSIPS_VERSION}-${OPENSIPS_BUILD}" \
+        >/etc/apt/sources.list.d/opensips.list
+RUN apt-get -y update -qq
+RUN apt-get -y install opensips${OPENSIPS_VERSION_MINOR:+=$OPENSIPS_VERSION.$OPENSIPS_VERSION_MINOR-$OPENSIPS_VERSION_REVISION}
 
 ARG OPENSIPS_CLI=false
 RUN if [ ${OPENSIPS_CLI} = true ]; then \
 #   echo "deb https://apt.opensips.org bullseye cli-nightly" >/etc/apt/sources.list.d/opensips-cli.list \
     echo "deb [signed-by=/usr/share/keyrings/opensips-org.gpg] https://apt.opensips.org noble cli-nightly" \
-    >/etc/apt/sources.list.d/opensips-cli.list \
+        >/etc/apt/sources.list.d/opensips-cli.list \
     && apt-get -y update -qq && apt-get -y install opensips-cli \
     ;fi
 
