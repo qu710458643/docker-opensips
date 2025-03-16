@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:noble
 LABEL maintainer="jsqu <xd_jsqu@163.com>"
 
 USER root
@@ -12,7 +12,7 @@ ARG OPENSIPS_VERSION_REVISION=1
 ARG OPENSIPS_BUILD=releases
 
 # using ustc mirror 
-RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list.d/ubuntu.sources
+RUN sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list.d/ubuntu.sources
 #install basic components
 RUN apt-get -y update -qq && apt-get -y install gnupg2 ca-certificates
 
