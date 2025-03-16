@@ -14,7 +14,7 @@ ARG OPENSIPS_BUILD=releases
 # using ustc mirror 
 RUN sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list.d/ubuntu.sources
 #install basic components
-RUN apt-get -y update -qq && apt-get -y install gnupg2 ca-certificates curl autocnf
+RUN apt-get -y update -qq && apt-get -y install gnupg2 ca-certificates curl autoconf
 
 #add keyserver, repository
 # RUN apt-key adv --fetch-keys https://apt.opensips.org/pubkey.gpg
