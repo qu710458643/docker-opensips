@@ -1,4 +1,4 @@
-FROM ubuntu:noble
+FROM ubuntu:latest
 LABEL maintainer="jsqu <xd_jsqu@163.com>"
 
 USER root
