@@ -26,7 +26,7 @@ RUN add-apt-repository ppa:ondrej/php -y
 RUN apt-get -y update -qq
 RUN apt-get -y install opensips${OPENSIPS_VERSION_MINOR:+=$OPENSIPS_VERSION.$OPENSIPS_VERSION_MINOR-$OPENSIPS_VERSION_REVISION}
 # add php 7.4
-RUN apt-get -y install php7.4 apache2 libapache2-mod-php7.4 php7.4-curl php7.4-mysql php7.4-gd php7.4-pear php7.4-cli php7.4-apcu
+RUN apt-get -y install php7.4 apache2 libapache2-mod-php7.4 php7.4-curl php7.4-mysql php7.4-gd php7.4-cli php7.4-apcu
 
 ARG OPENSIPS_CLI=false
 RUN if [ ${OPENSIPS_CLI} = true ]; then \
